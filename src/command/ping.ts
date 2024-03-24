@@ -6,6 +6,8 @@ export default {
         .setName("ping")
         .setDescription("reply with bot greeting"),
     async execute(interaction: Interaction): Promise<void> {
-        if (interaction.isRepliable()) interaction.reply(``);
+        if (interaction.isRepliable()) interaction.reply({
+            content: "Hi babe!"
+        });
     }
 }

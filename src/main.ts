@@ -23,7 +23,8 @@ const commands: string[] = [];
 (async function (): Promise<void> {
     for (const commandFile of commandFolders) {
         const commandFilePath = path.join(__dirname, `command/${commandFile}`);
-        const command = require(commandFilePath).default;
+        const files = await import(`file://${commandFilePath}`);
+        const command = files.default
         if (command.hasOwnProperty("data") && command.hasOwnProperty("execute")) {
             client.commands.set(command.data.name, command);
             commands.push(command.data.toJSON());
@@ -37,8 +38,8 @@ const commands: string[] = [];
             Routes.applicationCommands(env.DISCORD_CLIENT_ID as Snowflake), {body: commands}
         )
         console.log(`[SUCCESS] All commands has been loaded.`)
-    } catch (e: any) {
-        console.error(`[ERROR] Failed to register commands: ${e.message}.`)
+    } catch (e) {
+        console.error(`[ERROR] Failed to register commands: ${e}.`)
     }
 })();
 
